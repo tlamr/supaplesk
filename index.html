@@ -1,0 +1,357 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Hello World</title>
+</head>
+<script src="pixi.js"></script>
+<body>
+<script type="text/javascript">
+    //Aliases
+    let Application = PIXI.Application,
+        loader = PIXI.loader,
+        resources = PIXI.loader.resources,
+        Sprite = PIXI.Sprite;
+
+    //Create a Pixi Application
+    let app = new Application({
+            width: 832,
+            height: 704,
+            antialias: true,
+            transparent: false,
+            resolution: 1
+        }
+    );
+
+    //Add the canvas that Pixi automatically created for you to the HTML document
+    document.body.appendChild(app.view);
+
+    //load an image and run the `setup` function when it's done
+    loader
+        .add("images/knight.png")
+        .add("images/wall.png")
+        .add("images/castle.png")
+        .add("images/treasure.png")
+        .add("images/treasure2.png")
+        .add("images/treasure3.png")
+        .add("images/treasure4.png")
+        .add("images/treasure5.png")
+        .add("images/treasure6.png")
+        .add("images/treasure7.png")
+        .load(setup);
+
+    let text, cat, walls=[], castle, treasure, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasures=[];
+
+    let map = [
+        [true,true,true,true,true,true,true,true,true,true,true,true,true],
+        [true,false,false,false,false,false,false,false,false,false,false,false,true],
+        [true,true,true,true,true,true,true,true,true,true,true,false,true],
+        [true,false,false,false,false,false,true,false,false,false,true,false,true],
+        [true,false,true,false,true,false,true,false,true,false,true,false,true],
+        [true,false,false,false,true,false,false,false,true,false,false,false,true],
+        [true,true,true,false,true,true,true,true,true,true,true,true,true],
+        [true,false,false,false,true,false,false,false,true,false,false,false,true],
+        [true,false,true,false,true,false,true,false,true,false,true,false,true],
+        [true,false,false,false,false,false,true,false,false,false,true,false,true],
+        [true,true,true,true,true,true,true,true,true,true,true,true,true],
+    ]
+
+    //This `setup` function will run when the image has loaded
+    function setup() {
+
+        for (let i = 0; i < map.length ; i++) {
+            for (let j = 0; j < map[i].length; j++) {
+                if (!map[i][j]) continue;
+                let wall = new Sprite(resources["images/wall.png"].texture);
+                wall.y = i*64;
+                wall.x = j*64;
+                //Add the cat to the stage
+                app.stage.addChild(wall);
+                walls.push(wall);
+            }
+        }
+
+        //Create the cat sprite
+        castle = new Sprite(resources["images/castle.png"].texture);
+        castle.x = 832-64-64;
+        castle.y = 704-64-64;
+
+        //Add the cat to the stage
+        app.stage.addChild(castle);
+
+        //Create the cat sprite
+        treasure = new Sprite(resources["images/treasure.png"].texture);
+        treasure.x = 832-64-64;
+        treasure.y = 64;
+
+        //Add the cat to the stage
+        app.stage.addChild(treasure);
+
+        //Create the cat sprite
+        treasure2 = new Sprite(resources["images/treasure2.png"].texture);
+        treasure2.x = 64;
+        treasure2.y = 384-64;
+
+        //Add the cat to the stage
+        app.stage.addChild(treasure2);
+
+        //Create the cat sprite
+        treasure3 = new Sprite(resources["images/treasure3.png"].texture);
+        treasure3.x = 64;
+        treasure3.y = 384+64;
+
+        //Add the cat to the stage
+        app.stage.addChild(treasure3);
+
+        //Create the cat sprite
+        treasure4 = new Sprite(resources["images/treasure4.png"].texture);
+        treasure4.x = 64;
+        treasure4.y = 256-64;
+
+        //Add the cat to the stage
+        app.stage.addChild(treasure4);
+
+        //Create the cat sprite
+        treasure5 = new Sprite(resources["images/treasure5.png"].texture);
+        treasure5.x = 64+384;
+        treasure5.y = 384+64;
+
+        //Add the cat to the stage
+        app.stage.addChild(treasure5);
+
+        //Create the cat sprite
+        treasure6 = new Sprite(resources["images/treasure6.png"].texture);
+        treasure6.x = 64+384+128;
+        treasure6.y = 384+64-128;
+
+        //Add the cat to the stage
+        app.stage.addChild(treasure6);
+
+        //Create the cat sprite
+        treasure7 = new Sprite(resources["images/treasure7.png"].texture);
+        treasure7.x = 64;
+        treasure7.y = 384+64+128;
+
+        //Add the cat to the stage
+        app.stage.addChild(treasure7);
+
+        treasures.push(treasure, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7)
+
+        //Create the cat sprite
+        cat = new Sprite(resources["images/knight.png"].texture);
+        cat.x = 64;
+        cat.y = 64;
+        cat.vx = 0;
+        cat.vy = 0;
+
+        //Add the cat to the stage
+        app.stage.addChild(cat);
+
+        text = new PIXI.Text('Mamko, ještě ' + treasures.length,{fontFamily : 'Arial', fontSize: 24, fill : 0xff1010, align : 'center'});
+        //Add the cat to the stage
+        app.stage.addChild(text);
+
+        //Capture the keyboard arrow keys
+        let left = keyboard("ArrowLeft"),
+            up = keyboard("ArrowUp"),
+            right = keyboard("ArrowRight"),
+            down = keyboard("ArrowDown");
+
+        //Left arrow key `press` method
+        left.press = () => {
+            //Change the cat's velocity when the key is pressed
+            cat.vx = -5;
+            cat.vy = 0;
+        };
+
+        //Left arrow key `release` method
+        left.release = () => {
+            //If the left arrow has been released, and the right arrow isn't down,
+            //and the cat isn't moving vertically:
+            //Stop the cat
+            if (!right.isDown && cat.vy === 0) {
+                cat.vx = 0;
+            }
+        };
+
+        //Up
+        up.press = () => {
+            cat.vy = -5;
+            cat.vx = 0;
+        };
+        up.release = () => {
+            if (!down.isDown && cat.vx === 0) {
+                cat.vy = 0;
+            }
+        };
+
+        //Right
+        right.press = () => {
+            cat.vx = 5;
+            cat.vy = 0;
+        };
+        right.release = () => {
+            if (!left.isDown && cat.vy === 0) {
+                cat.vx = 0;
+            }
+        };
+
+        //Down
+        down.press = () => {
+            cat.vy = 5;
+            cat.vx = 0;
+        };
+        down.release = () => {
+            if (!up.isDown && cat.vx === 0) {
+                cat.vy = 0;
+            }
+        };
+
+        app.ticker.add(delta => gameLoop(delta));
+    }
+
+    function hitTestRectangle(r1, r2) {
+
+        //Define the variables we'll need to calculate
+        let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
+
+        //hit will determine whether there's a collision
+        hit = false;
+
+        //Find the center points of each sprite
+        r1.centerX = r1.x + r1.width / 2;
+        r1.centerY = r1.y + r1.height / 2;
+        r2.centerX = r2.x + r2.width / 2;
+        r2.centerY = r2.y + r2.height / 2;
+
+        //Find the half-widths and half-heights of each sprite
+        r1.halfWidth = r1.width / 2;
+        r1.halfHeight = r1.height / 2;
+        r2.halfWidth = r2.width / 2;
+        r2.halfHeight = r2.height / 2;
+
+        //Calculate the distance vector between the sprites
+        vx = r1.centerX - r2.centerX;
+        vy = r1.centerY - r2.centerY;
+
+        //Figure out the combined half-widths and half-heights
+        combinedHalfWidths = r1.halfWidth + r2.halfWidth;
+        combinedHalfHeights = r1.halfHeight + r2.halfHeight;
+
+        //Check for a collision on the x axis
+        if (Math.abs(vx) < combinedHalfWidths) {
+
+            //A collision might be occurring. Check for a collision on the y axis
+            if (Math.abs(vy) < combinedHalfHeights) {
+
+                //There's definitely a collision happening
+                hit = true;
+            } else {
+
+                //There's no collision on the y axis
+                hit = false;
+            }
+        } else {
+
+            //There's no collision on the x axis
+            hit = false;
+        }
+
+        //`hit` will be either `true` or `false`
+        return hit;
+    };
+
+    function keyboard(value) {
+        let key = {};
+        key.value = value;
+        key.isDown = false;
+        key.isUp = true;
+        key.press = undefined;
+        key.release = undefined;
+        //The `downHandler`
+        key.downHandler = event => {
+            if (event.key === key.value) {
+                if (key.isUp && key.press) key.press();
+                key.isDown = true;
+                key.isUp = false;
+                event.preventDefault();
+            }
+        };
+
+        //The `upHandler`
+        key.upHandler = event => {
+            if (event.key === key.value) {
+                if (key.isDown && key.release) key.release();
+                key.isDown = false;
+                key.isUp = true;
+                event.preventDefault();
+            }
+        };
+
+
+        //Attach event listeners
+        const downListener = key.downHandler.bind(key);
+        const upListener = key.upHandler.bind(key);
+
+        window.addEventListener(
+            "keydown", downListener, false
+        );
+        window.addEventListener(
+            "keyup", upListener, false
+        );
+
+        // Detach event listeners
+        key.unsubscribe = () => {
+            window.removeEventListener("keydown", downListener);
+            window.removeEventListener("keyup", upListener);
+        };
+
+        return key;
+    }
+
+    function gameLoop(delta){
+        //Use the cat's velocity to make it move
+        const mx = Math.floor(cat.x / 64);
+        const my = Math.floor(cat.y / 64);
+
+        if (cat.vx < 0 && map[my][mx]) {
+            cat.x = (Math.round(cat.x / 64))*64;
+            cat.vx = 0;
+        }
+        if (cat.vy < 0 && map[my][mx]) {
+            cat.y = (Math.round(cat.y / 64))*64;
+            cat.vy = 0;
+        }
+        if (cat.vy > 0 && map[my+1][mx]) {
+            cat.y = (Math.round(cat.y / 64))*64;
+            cat.vy = 0;
+        }
+        if (cat.vx > 0 && map[my][mx+1]) {
+            cat.x = (Math.round(cat.x / 64))*64;
+            cat.vx = 0;
+        }
+        cat.x += cat.vx * delta;
+        cat.y += cat.vy * delta;
+        let cnt = 0;
+        for (let i = 0; i < treasures.length; i++) {
+            if ((Math.abs(treasures[i].x - cat.x) < 16) && (Math.abs(treasures[i].y - cat.y) < 16))  {
+                treasures[i].visible = false;
+                for (let j = 0; j < treasures.length; j++) {
+                    if (treasures[j].visible) cnt++;
+                }
+                text.text = "Mamko, ještě " + cnt;
+
+            }
+        }
+        cnt = 0;
+        for (let j = 0; j < treasures.length; j++) {
+            if (treasures[j].visible) cnt++;
+        }
+        if (cnt === 0 && (Math.abs(castle.x - cat.x) < 16) && (Math.abs(castle.y - cat.y) < 16)) {
+            text.text = "Mamko, vyhrálas!";
+        }
+
+    }
+</script>
+</body>
+</html>
