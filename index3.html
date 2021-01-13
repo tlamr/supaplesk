@@ -29,8 +29,8 @@
 
     //load an image and run the `setup` function when it's done
     loader
-        .add("images/knight.png")
-        .add("images/wall.png")
+        .add("images/army.png")
+        .add("images/water.png")
         .add("images/castle.png")
         .add("images/treasure.png")
         .add("images/treasure2.png")
@@ -39,23 +39,26 @@
         .add("images/treasure5.png")
         .add("images/treasure6.png")
         .add("images/treasure7.png")
+        .add("images/treasure8.png")
+        .add("images/treasure9.png")
+        .add("images/zombie.png")
         .load(setup);
 
-    let text, cat, walls=[], castle, treasure, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasures=[];
+    let text, zombie,zombie2,zombie3, cat, walls=[], castle, treasure, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7,treasure8,treasure9, treasures=[];
 
     let map = [
-        [true,true,true,true,true,true,true,true,true,true,true,true,true],
-        [true,false,false,false,false,false,false,false,false,false,false,false,true],
-        [true,true,true,true,true,true,true,true,true,true,true,false,true],
-        [true,false,false,false,false,false,true,false,false,false,true,false,true],
-        [true,false,true,false,true,false,true,false,true,false,true,false,true],
-        [true,false,false,false,true,false,false,false,true,false,false,false,true],
-        [true,true,true,false,true,true,true,true,true,true,true,true,true],
-        [true,false,false,false,true,false,false,false,true,false,false,false,true],
-        [true,false,true,false,true,false,true,false,true,false,true,false,true],
-        [true,false,false,false,false,false,true,false,false,false,true,false,true],
-        [true,true,true,true,true,true,true,true,true,true,true,true,true],
-    ]
+        "#############",
+        "#...........#",
+        "###.#########",
+        "###.#########",
+        "###.#########",
+        "###.#########",
+        "###.#########",
+        "###.........#",
+        "###########.#",
+        "###########.#",
+        "#############",
+    ].map(s => s.split("").map(c => c === '#'))
 
     //This `setup` function will run when the image has loaded
     function setup() {
@@ -63,7 +66,7 @@
         for (let i = 0; i < map.length ; i++) {
             for (let j = 0; j < map[i].length; j++) {
                 if (!map[i][j]) continue;
-                let wall = new Sprite(resources["images/wall.png"].texture);
+                let wall = new Sprite(resources["images/water.png"].texture);
                 wall.y = i*64;
                 wall.x = j*64;
                 //Add the cat to the stage
@@ -74,31 +77,31 @@
 
         //Create the cat sprite
         castle = new Sprite(resources["images/castle.png"].texture);
-        castle.x = 832-64-64;
-        castle.y = 704-64-64;
+        castle.x = 704;
+        castle.y = 64;
 
         //Add the cat to the stage
         app.stage.addChild(castle);
 
         //Create the cat sprite
         treasure = new Sprite(resources["images/treasure.png"].texture);
-        treasure.x = 832-64-64;
-        treasure.y = 64;
+        treasure.x = 832-64-128;
+        treasure.y = 64+256+128;
 
         //Add the cat to the stage
         app.stage.addChild(treasure);
 
         //Create the cat sprite
         treasure2 = new Sprite(resources["images/treasure2.png"].texture);
-        treasure2.x = 64;
-        treasure2.y = 384-64;
+        treasure2.x = 64+128;
+        treasure2.y = 384-64+64;
 
         //Add the cat to the stage
         app.stage.addChild(treasure2);
 
         //Create the cat sprite
         treasure3 = new Sprite(resources["images/treasure3.png"].texture);
-        treasure3.x = 64;
+        treasure3.x = 64+128;
         treasure3.y = 384+64;
 
         //Add the cat to the stage
@@ -106,7 +109,7 @@
 
         //Create the cat sprite
         treasure4 = new Sprite(resources["images/treasure4.png"].texture);
-        treasure4.x = 64;
+        treasure4.x = 64+128;
         treasure4.y = 256-64;
 
         //Add the cat to the stage
@@ -122,33 +125,59 @@
 
         //Create the cat sprite
         treasure6 = new Sprite(resources["images/treasure6.png"].texture);
-        treasure6.x = 64+384+128;
-        treasure6.y = 384+64-128;
+        treasure6.x = 320;
+        treasure6.y = 384+64;
 
         //Add the cat to the stage
         app.stage.addChild(treasure6);
 
         //Create the cat sprite
         treasure7 = new Sprite(resources["images/treasure7.png"].texture);
-        treasure7.x = 64;
-        treasure7.y = 384+64+128;
+        treasure7.x = 64+128;
+        treasure7.y = 128;
 
         //Add the cat to the stage
         app.stage.addChild(treasure7);
 
-        treasures.push(treasure, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7)
+        //Create the cat sprite
+        treasure8 = new Sprite(resources["images/treasure8.png"].texture);
+        treasure8.x = 320;
+        treasure8.y = 64;
+
+        //Add the cat to the stage
+        app.stage.addChild(treasure8);
 
         //Create the cat sprite
-        cat = new Sprite(resources["images/knight.png"].texture);
-        cat.x = 64;
-        cat.y = 64;
+        treasure9 = new Sprite(resources["images/treasure9.png"].texture);
+        treasure9.x = 64;
+        treasure9.y = 64;
+
+        //Add the cat to the stage
+        app.stage.addChild(treasure9);
+
+        treasures.push(treasure, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasure8, treasure9)
+
+        //Create the cat sprite
+        cat = new Sprite(resources["images/army.png"].texture);
+        cat.x = 704;
+        cat.y = 576;
         cat.vx = 0;
         cat.vy = 0;
 
         //Add the cat to the stage
         app.stage.addChild(cat);
 
-        text = new PIXI.Text('Paní učitelko, ještě ' + treasures.length,{fontFamily : 'Arial', fontSize: 24, fill : 0xff1010, align : 'center'});
+        //Create the cat sprite
+        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie.x = 192;
+        zombie.y = 64;
+        zombie.vx = 0;
+        zombie.vy = 5;
+
+        //Add the cat to the stage
+        app.stage.addChild(zombie);
+
+        text = new PIXI.Text('Toníku, ještě ' + treasures.length,{fontFamily : 'Arial', fontSize: 24, fill : 0xffffff, align : 'center'});
         //Add the cat to the stage
         app.stage.addChild(text);
 
@@ -351,7 +380,7 @@
                 for (let j = 0; j < treasures.length; j++) {
                     if (treasures[j].visible) cnt++;
                 }
-                text.text = "Paní učitelko, ještě " + cnt;
+                text.text = "Toníku, ještě " + cnt;
 
             }
         }
@@ -360,9 +389,16 @@
             if (treasures[j].visible) cnt++;
         }
         if (cnt === 0 && (Math.abs(castle.x - cat.x) < 16) && (Math.abs(castle.y - cat.y) < 16)) {
-            text.text = "Paní učitelko, vyhrála jste!";
+            text.text = "Toníku, vyhráls!";
         }
 
+        if (zombie.y <= 64) {
+            zombie.vy = 5;
+        }
+        if (zombie.y >= 444) {
+            zombie.vy = -5;
+        }
+        zombie.y += zombie.vy;
     }
 </script>
 </body>
