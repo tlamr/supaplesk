@@ -147,7 +147,7 @@
         //Add the cat to the stage
         app.stage.addChild(cat);
 
-        text = new PIXI.Text('Mamko, ještě ' + treasures.length,{fontFamily : 'Arial', fontSize: 24, fill : 0xff1010, align : 'center'});
+        text = new PIXI.Text('Paní učitelko, ještě ' + treasures.length,{fontFamily : 'Arial', fontSize: 24, fill : 0xff1010, align : 'center'});
         //Add the cat to the stage
         app.stage.addChild(text);
 
@@ -313,25 +313,36 @@
         //Use the cat's velocity to make it move
         const mx = Math.floor(cat.x / 64);
         const my = Math.floor(cat.y / 64);
+        const mxp1 = Math.floor((cat.x+cat.width-1) / 64);
+        const myp1 = Math.floor((cat.y+cat.height-1)/ 64);
 
-        if (cat.vx < 0 && map[my][mx]) {
+        if (cat.vx < 0 && (map[my][mx] || map[myp1][mx])) {
             cat.x = (Math.round(cat.x / 64))*64;
             cat.vx = 0;
         }
-        if (cat.vy < 0 && map[my][mx]) {
+        if (cat.vy < 0 && (map[my][mx] || map[my][mxp1])) {
             cat.y = (Math.round(cat.y / 64))*64;
             cat.vy = 0;
         }
-        if (cat.vy > 0 && map[my+1][mx]) {
+        if (cat.vy > 0 && (map[myp1][mx] || map[myp1][mxp1])) {
             cat.y = (Math.round(cat.y / 64))*64;
             cat.vy = 0;
         }
-        if (cat.vx > 0 && map[my][mx+1]) {
+        if (cat.vx > 0 && (map[my][mxp1] || map[myp1][mxp1])) {
             cat.x = (Math.round(cat.x / 64))*64;
             cat.vx = 0;
         }
-        cat.x += cat.vx * delta;
-        cat.y += cat.vy * delta;
+        if (cat.vx === 0 && Math.abs(cat.x % 64) < 16) {
+            cat.x = Math.round(cat.x / 64) * 64;
+        } else {
+            cat.x += cat.vx;
+        }
+        if (cat.vy === 0 && Math.abs(cat.y % 64) < 16) {
+            cat.y = Math.round(cat.y / 64) * 64;
+        } else {
+            cat.y += cat.vy;
+        }
+
         let cnt = 0;
         for (let i = 0; i < treasures.length; i++) {
             if ((Math.abs(treasures[i].x - cat.x) < 16) && (Math.abs(treasures[i].y - cat.y) < 16))  {
@@ -339,7 +350,7 @@
                 for (let j = 0; j < treasures.length; j++) {
                     if (treasures[j].visible) cnt++;
                 }
-                text.text = "Mamko, ještě " + cnt;
+                text.text = "Paní učitelko, ještě " + cnt;
 
             }
         }
@@ -348,7 +359,7 @@
             if (treasures[j].visible) cnt++;
         }
         if (cnt === 0 && (Math.abs(castle.x - cat.x) < 16) && (Math.abs(castle.y - cat.y) < 16)) {
-            text.text = "Mamko, vyhrálas!";
+            text.text = "Paní učitelko, vyhrála jste!";
         }
 
     }
