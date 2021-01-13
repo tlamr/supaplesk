@@ -28,8 +28,8 @@
 
     //load an image and run the `setup` function when it's done
     loader
-        .add("images/knight.png")
-        .add("images/wall.png")
+        .add("images/army.png")
+        .add("images/water.png")
         .add("images/castle.png")
         .add("images/treasure.png")
         .add("images/treasure2.png")
@@ -47,15 +47,15 @@
 
     let map = [
         "#############",
-        "#.#########.#",
-        "#.#########.#",
-        "#.#########.#",
-        "#.#########.#",
-        "#.#########.#",
         "#...........#",
-        "#...........#",
-        "#...........#",
-        "#...........#",
+        "###.#########",
+        "###.#########",
+        "###.#########",
+        "###.#########",
+        "###.#########",
+        "###.........#",
+        "###########.#",
+        "###########.#",
         "#############",
     ].map(s => s.split("").map(c => c === '#'))
 
@@ -65,7 +65,7 @@
         for (let i = 0; i < map.length ; i++) {
             for (let j = 0; j < map[i].length; j++) {
                 if (!map[i][j]) continue;
-                let wall = new Sprite(resources["images/wall.png"].texture);
+                let wall = new Sprite(resources["images/water.png"].texture);
                 wall.y = i*64;
                 wall.x = j*64;
                 //Add the cat to the stage
@@ -76,7 +76,7 @@
 
         //Create the cat sprite
         castle = new Sprite(resources["images/castle.png"].texture);
-        castle.x = 64;
+        castle.x = 704;
         castle.y = 64;
 
         //Add the cat to the stage
@@ -92,7 +92,7 @@
 
         //Create the cat sprite
         treasure2 = new Sprite(resources["images/treasure2.png"].texture);
-        treasure2.x = 64;
+        treasure2.x = 64+128;
         treasure2.y = 384-64+64;
 
         //Add the cat to the stage
@@ -100,7 +100,7 @@
 
         //Create the cat sprite
         treasure3 = new Sprite(resources["images/treasure3.png"].texture);
-        treasure3.x = 64;
+        treasure3.x = 64+128;
         treasure3.y = 384+64;
 
         //Add the cat to the stage
@@ -108,7 +108,7 @@
 
         //Create the cat sprite
         treasure4 = new Sprite(resources["images/treasure4.png"].texture);
-        treasure4.x = 64;
+        treasure4.x = 64+128;
         treasure4.y = 256-64;
 
         //Add the cat to the stage
@@ -132,8 +132,8 @@
 
         //Create the cat sprite
         treasure7 = new Sprite(resources["images/treasure7.png"].texture);
-        treasure7.x = 64;
-        treasure7.y = 384+64+128;
+        treasure7.x = 64+128;
+        treasure7.y = 128;
 
         //Add the cat to the stage
         app.stage.addChild(treasure7);
@@ -141,7 +141,7 @@
         //Create the cat sprite
         treasure8 = new Sprite(resources["images/treasure8.png"].texture);
         treasure8.x = 320;
-        treasure8.y = 384+64+128;
+        treasure8.y = 64;
 
         //Add the cat to the stage
         app.stage.addChild(treasure8);
@@ -149,7 +149,7 @@
         //Create the cat sprite
         treasure9 = new Sprite(resources["images/treasure9.png"].texture);
         treasure9.x = 64;
-        treasure9.y = 128;
+        treasure9.y = 64;
 
         //Add the cat to the stage
         app.stage.addChild(treasure9);
@@ -157,9 +157,9 @@
         treasures.push(treasure, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasure8, treasure9)
 
         //Create the cat sprite
-        cat = new Sprite(resources["images/knight.png"].texture);
+        cat = new Sprite(resources["images/army.png"].texture);
         cat.x = 704;
-        cat.y = 64;
+        cat.y = 576;
         cat.vx = 0;
         cat.vy = 0;
 
@@ -168,35 +168,15 @@
 
         //Create the cat sprite
         zombie = new Sprite(resources["images/zombie.png"].texture);
-        zombie.x = 704;
-        zombie.y = 384+128;
-        zombie.vx = -5;
-        zombie.vy = 0;
+        zombie.x = 192;
+        zombie.y = 64;
+        zombie.vx = 0;
+        zombie.vy = 5;
 
         //Add the cat to the stage
         app.stage.addChild(zombie);
 
-        //Create the cat sprite
-        zombie2 = new Sprite(resources["images/zombie.png"].texture);
-        zombie2.x = 196;
-        zombie2.y = 576;
-        zombie2.vx = -5;
-        zombie2.vy = 0;
-
-        //Add the cat to the stage
-        app.stage.addChild(zombie2);
-
-        //Create the cat sprite
-        zombie3 = new Sprite(resources["images/zombie.png"].texture);
-        zombie3.x = 576;
-        zombie3.y = 384;
-        zombie3.vx = 0;
-        zombie3.vy = 5;
-
-        //Add the cat to the stage
-        app.stage.addChild(zombie3);
-
-        text = new PIXI.Text('Šimonku, ještě ' + treasures.length,{fontFamily : 'Arial', fontSize: 24, fill : 0xffffff, align : 'center'});
+        text = new PIXI.Text('Toníku, ještě ' + treasures.length,{fontFamily : 'Arial', fontSize: 24, fill : 0xffffff, align : 'center'});
         //Add the cat to the stage
         app.stage.addChild(text);
 
@@ -399,7 +379,7 @@
                 for (let j = 0; j < treasures.length; j++) {
                     if (treasures[j].visible) cnt++;
                 }
-                text.text = "Šimonku, ještě " + cnt;
+                text.text = "Toníku, ještě " + cnt;
 
             }
         }
@@ -408,33 +388,16 @@
             if (treasures[j].visible) cnt++;
         }
         if (cnt === 0 && (Math.abs(castle.x - cat.x) < 16) && (Math.abs(castle.y - cat.y) < 16)) {
-            text.text = "Šimonku, vyhráls!";
+            text.text = "Toníku, vyhráls!";
         }
 
-        if (zombie.x <= 64) {
-            zombie.vx = 5;
+        if (zombie.y <= 64) {
+            zombie.vy = 5;
         }
-        if (zombie.x >= 704) {
-            zombie.vx = -5;
+        if (zombie.y >= 444) {
+            zombie.vy = -5;
         }
-        zombie.x += zombie.vx;
-
-        if (zombie2.y <= 384) {
-            zombie2.vy = 5;
-        }
-        if (zombie2.y >= 576) {
-            zombie2.vy = -5;
-        }
-        zombie2.y += zombie2.vy;
-
-        if (zombie3.y <= 384) {
-            zombie3.vy = 5;
-        }
-        if (zombie3.y >= 576) {
-            zombie3.vy = -5;
-        }
-        zombie3.y += zombie3.vy;
-
+        zombie.y += zombie.vy;
     }
 </script>
 </body>
