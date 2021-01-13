@@ -29,7 +29,8 @@
     //load an image and run the `setup` function when it's done
     loader
         .add("images/army.png")
-        .add("images/water.png")
+        .add("images/army_red.png")
+        .add("images/wall2.png")
         .add("images/castle.png")
         .add("images/treasure.png")
         .add("images/treasure2.png")
@@ -43,19 +44,19 @@
         .add("images/zombie.png")
         .load(setup);
 
-    let text, zombie,zombie2,zombie3, cat, walls=[], castle, treasure, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7,treasure8,treasure9, treasures=[];
+    let spacePressed=false,text, zombie,zombie2,zombie3, zombies=[],cat, walls=[], castle, treasure, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7,treasure8,treasure9, treasures=[];
 
     let map = [
         "#############",
         "#...........#",
-        "###.#########",
-        "###.#########",
-        "###.#########",
-        "###.#########",
-        "###.#########",
-        "###.........#",
-        "###########.#",
-        "###########.#",
+        "#.###########",
+        "#...........#",
+        "#.#.#.#.#.#.#",
+        "#.....#.....#",
+        "#.#.#.#.#.#.#",
+        "#...........#",
+        "#.#.#.#.#.#.#",
+        "#...........#",
         "#############",
     ].map(s => s.split("").map(c => c === '#'))
 
@@ -65,7 +66,7 @@
         for (let i = 0; i < map.length ; i++) {
             for (let j = 0; j < map[i].length; j++) {
                 if (!map[i][j]) continue;
-                let wall = new Sprite(resources["images/water.png"].texture);
+                let wall = new Sprite(resources["images/wall2.png"].texture);
                 wall.y = i*64;
                 wall.x = j*64;
                 //Add the cat to the stage
@@ -132,24 +133,24 @@
 
         //Create the cat sprite
         treasure7 = new Sprite(resources["images/treasure7.png"].texture);
-        treasure7.x = 64+128;
-        treasure7.y = 128;
+        treasure7.x = 64;
+        treasure7.y = 576;
 
         //Add the cat to the stage
         app.stage.addChild(treasure7);
 
         //Create the cat sprite
         treasure8 = new Sprite(resources["images/treasure8.png"].texture);
-        treasure8.x = 320;
-        treasure8.y = 64;
+        treasure8.x = 320+192+64;
+        treasure8.y = 64+192;
 
         //Add the cat to the stage
         app.stage.addChild(treasure8);
 
         //Create the cat sprite
         treasure9 = new Sprite(resources["images/treasure9.png"].texture);
-        treasure9.x = 64;
-        treasure9.y = 64;
+        treasure9.x = 64+192+64;
+        treasure9.y = 64+192+64;
 
         //Add the cat to the stage
         app.stage.addChild(treasure9);
@@ -169,14 +170,101 @@
         //Create the cat sprite
         zombie = new Sprite(resources["images/zombie.png"].texture);
         zombie.x = 192;
-        zombie.y = 64;
+        zombie.y = 192;
         zombie.vx = 0;
         zombie.vy = 5;
 
         //Add the cat to the stage
         app.stage.addChild(zombie);
 
-        text = new PIXI.Text('Toníku, ještě ' + treasures.length,{fontFamily : 'Arial', fontSize: 24, fill : 0xffffff, align : 'center'});
+        zombies.push(zombie);
+
+        //Create the cat sprite
+        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie.x = 192+128;
+        zombie.y = 192+128;
+        zombie.vx = 0;
+        zombie.vy = -5;
+
+        //Add the cat to the stage
+        app.stage.addChild(zombie);
+
+        zombies.push(zombie);
+
+        //Create the cat sprite
+        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie.x = 192+128+128;
+        zombie.y = 192+128;
+        zombie.vx = 0;
+        zombie.vy = 5;
+
+        //Add the cat to the stage
+        app.stage.addChild(zombie);
+
+        zombies.push(zombie);
+
+
+        //Create the cat sprite
+        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie.x = 192+128+128+128;
+        zombie.y = 192+128+128;
+        zombie.vx = 0;
+        zombie.vy = -5;
+
+        //Add the cat to the stage
+        app.stage.addChild(zombie);
+
+        zombies.push(zombie);
+
+        //Create the cat sprite
+        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie.x = 192;
+        zombie.y = 192;
+        zombie.vx = 5;
+        zombie.vy = 0;
+
+        //Add the cat to the stage
+        app.stage.addChild(zombie);
+
+        zombies.push(zombie);
+
+        //Create the cat sprite
+        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie.x = 192+256;
+        zombie.y = 192+256;
+        zombie.vx = -5;
+        zombie.vy = 0;
+
+        //Add the cat to the stage
+        app.stage.addChild(zombie);
+
+        zombies.push(zombie);
+
+        //Create the cat sprite
+        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie.x = 192+256;
+        zombie.y = 192+128;
+        zombie.vx = 5;
+        zombie.vy = 0;
+
+        //Add the cat to the stage
+        app.stage.addChild(zombie);
+
+        zombies.push(zombie);
+
+        //Create the cat sprite
+        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie.x = 192+128;
+        zombie.y = 192+128;
+        zombie.vx = -5;
+        zombie.vy = 0;
+
+        //Add the cat to the stage
+        app.stage.addChild(zombie);
+
+        zombies.push(zombie);
+        
+        text = new PIXI.Text('Kluci, ještě ' + treasures.length,{fontFamily : 'Arial', fontSize: 24, fill : 0xffffff, align : 'center'});
         //Add the cat to the stage
         app.stage.addChild(text);
 
@@ -184,7 +272,18 @@
         let left = keyboard("ArrowLeft"),
             up = keyboard("ArrowUp"),
             right = keyboard("ArrowRight"),
-            down = keyboard("ArrowDown");
+            down = keyboard("ArrowDown"),
+            space = keyboard(" ");
+
+        space.press = () => {
+            spacePressed = true;
+            cat.texture = resources["images/army_red.png"].texture
+        }
+
+        space.release = () => {
+            cat.texture = resources["images/army.png"].texture
+            spacePressed = false;
+        }
 
         //Left arrow key `press` method
         left.press = () => {
@@ -337,49 +436,57 @@
 
         return key;
     }
+    
+    function computePositions(sprite) {
+        const mx = Math.floor(sprite.x / 64);
+        const my = Math.floor(sprite.y / 64);
+        const mxp1 = Math.floor((sprite.x + sprite.width - 1) / 64);
+        const myp1 = Math.floor((sprite.y + sprite.height - 1) / 64);
+        return {mx,my,mxp1,myp1};
+    }
 
-    function gameLoop(delta){
+    function gameLoop(delta) {
         //Use the cat's velocity to make it move
-        const mx = Math.floor(cat.x / 64);
-        const my = Math.floor(cat.y / 64);
-        const mxp1 = Math.floor((cat.x+cat.width-1) / 64);
-        const myp1 = Math.floor((cat.y+cat.height-1)/ 64);
+        const {mx, my, mxp1, myp1} = computePositions(cat);
 
         if (cat.vx < 0 && (map[my][mx] || map[myp1][mx])) {
-            cat.x = (Math.round(cat.x / 64))*64;
+            cat.x = (Math.round(cat.x / 64)) * 64;
             cat.vx = 0;
         }
         if (cat.vy < 0 && (map[my][mx] || map[my][mxp1])) {
-            cat.y = (Math.round(cat.y / 64))*64;
+            cat.y = (Math.round(cat.y / 64)) * 64;
             cat.vy = 0;
         }
         if (cat.vy > 0 && (map[myp1][mx] || map[myp1][mxp1])) {
-            cat.y = (Math.round(cat.y / 64))*64;
+            cat.y = (Math.round(cat.y / 64)) * 64;
             cat.vy = 0;
         }
         if (cat.vx > 0 && (map[my][mxp1] || map[myp1][mxp1])) {
-            cat.x = (Math.round(cat.x / 64))*64;
+            cat.x = (Math.round(cat.x / 64)) * 64;
             cat.vx = 0;
         }
-        if (cat.vx === 0 && Math.abs(cat.x % 64) < 16) {
-            cat.x = Math.round(cat.x / 64) * 64;
-        } else {
-            cat.x += cat.vx;
-        }
-        if (cat.vy === 0 && Math.abs(cat.y % 64) < 16) {
-            cat.y = Math.round(cat.y / 64) * 64;
-        } else {
-            cat.y += cat.vy;
+
+        if (cat.visible) {
+            if (cat.vx === 0 && Math.abs(cat.x % 64) < 20) {
+                cat.x = Math.round(cat.x / 64) * 64;
+            } else {
+                cat.x += cat.vx;
+            }
+            if (cat.vy === 0 && Math.abs(cat.y % 64) < 20) {
+                cat.y = Math.round(cat.y / 64) * 64;
+            } else {
+                cat.y += cat.vy;
+            }
         }
 
         let cnt = 0;
         for (let i = 0; i < treasures.length; i++) {
-            if ((Math.abs(treasures[i].x - cat.x) < 16) && (Math.abs(treasures[i].y - cat.y) < 16))  {
+            if ((Math.abs(treasures[i].x - cat.x) < 16) && (Math.abs(treasures[i].y - cat.y) < 16)) {
                 treasures[i].visible = false;
                 for (let j = 0; j < treasures.length; j++) {
                     if (treasures[j].visible) cnt++;
                 }
-                text.text = "Toníku, ještě " + cnt;
+                text.text = "Kluci, ještě " + cnt;
 
             }
         }
@@ -388,16 +495,45 @@
             if (treasures[j].visible) cnt++;
         }
         if (cnt === 0 && (Math.abs(castle.x - cat.x) < 16) && (Math.abs(castle.y - cat.y) < 16)) {
-            text.text = "Toníku, vyhráls!";
+            text.text = "Kluci, vyhráli jste!";
         }
+        
+        for (let i = 0; i < zombies.length; i++) {
+            let zombie = zombies[i];
+            if (!zombie.visible) continue;
+            const {mx, my, mxp1, myp1} = computePositions(zombie);
 
-        if (zombie.y <= 64) {
-            zombie.vy = 5;
+            if (zombie.vx < 0 && (map[my][mx] || map[myp1][mx])) {
+                zombie.x = (Math.round(zombie.x / 64)) * 64;
+                zombie.vx = -zombie.vx;
+            }
+            if (zombie.vy < 0 && (map[my][mx] || map[my][mxp1])) {
+                zombie.y = (Math.round(zombie.y / 64)) * 64;
+                zombie.vy = -zombie.vy;
+            }
+
+            if (zombie.vy > 0 && (map[myp1][mx] || map[myp1][mxp1])) {
+                zombie.y = (Math.round(zombie.y / 64)) * 64;
+                zombie.vy = -zombie.vy;
+            }
+            if (zombie.vx > 0 && (map[my][mxp1] || map[myp1][mxp1])) {
+                zombie.x = (Math.round(zombie.x / 64)) * 64;
+                zombie.vx = -zombie.vx;
+            }
+            
+            zombie.x += zombie.vx;
+            zombie.y += zombie.vy;
+
+            if ((Math.abs(zombie.x - cat.x) < 48) && (Math.abs(zombie.y - cat.y) < 48)) {
+                if (spacePressed) {
+                    app.stage.removeChild(zombie);
+                    zombie.visible = false;
+                } else {
+                    cat.visible = false;
+                    text.text = "Kluci, prohráli jste!";
+                }
+            }
         }
-        if (zombie.y >= 444) {
-            zombie.vy = -5;
-        }
-        zombie.y += zombie.vy;
     }
 </script>
 </body>
