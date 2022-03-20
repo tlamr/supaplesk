@@ -19,6 +19,7 @@
             height: 704,
             antialias: true,
             transparent: false,
+            backgroundColor: 0xD9C436,
             resolution: 1
         }
     );
@@ -28,35 +29,35 @@
 
     //load an image and run the `setup` function when it's done
     loader
-        .add("images/army.png")
-        .add("images/army_red.png")
-        .add("images/wall2.png")
+        .add("images/panacek.png")
+        .add("images/panacek_red.png")
+        .add("images/wall3.png")
         .add("images/castle.png")
-        .add("images/treasure.png")
-        .add("images/treasure2.png")
-        .add("images/treasure3.png")
-        .add("images/treasure4.png")
-        .add("images/treasure5.png")
-        .add("images/treasure6.png")
-        .add("images/treasure7.png")
-        .add("images/treasure8.png")
-        .add("images/treasure9.png")
-        .add("images/zombie.png")
+        .add("images/poklad.png")
+        .add("images/poklad2.png")
+        .add("images/poklad3.png")
+        .add("images/poklad4.png")
+        .add("images/poklad5.png")
+        .add("images/poklad6.png")
+        .add("images/poklad7.png")
+        .add("images/poklad8.png")
+        .add("images/poklad9.png")
+        .add("images/zloun.png")
         .load(setup);
 
     let spacePressed=false,text, zombie,zombie2,zombie3, zombies=[],cat, walls=[], castle, treasure, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7,treasure8,treasure9, treasures=[];
 
     let map = [
         "#############",
-        "#...........#",
-        "#.###########",
-        "#...........#",
-        "#.#.#.#.#.#.#",
+        "#......#....#",
+        "#.#..#####.##",
         "#.....#.....#",
         "#.#.#.#.#.#.#",
-        "#...........#",
-        "#.#.#.#.#.#.#",
-        "#...........#",
+        "#......#....#",
+        "#.#.#.###.#.#",
+        "#.......#...#",
+        "#.#.#.#...#.#",
+        "#.......#...#",
         "#############",
     ].map(s => s.split("").map(c => c === '#'))
 
@@ -66,7 +67,7 @@
         for (let i = 0; i < map.length ; i++) {
             for (let j = 0; j < map[i].length; j++) {
                 if (!map[i][j]) continue;
-                let wall = new Sprite(resources["images/wall2.png"].texture);
+                let wall = new Sprite(resources["images/wall3.png"].texture);
                 wall.y = i*64;
                 wall.x = j*64;
                 //Add the cat to the stage
@@ -84,7 +85,7 @@
         app.stage.addChild(castle);
 
         //Create the cat sprite
-        treasure = new Sprite(resources["images/treasure.png"].texture);
+        treasure = new Sprite(resources["images/poklad.png"].texture);
         treasure.x = 832-64-128;
         treasure.y = 64+256+128;
 
@@ -92,7 +93,7 @@
         app.stage.addChild(treasure);
 
         //Create the cat sprite
-        treasure2 = new Sprite(resources["images/treasure2.png"].texture);
+        treasure2 = new Sprite(resources["images/poklad2.png"].texture);
         treasure2.x = 64+128;
         treasure2.y = 384-64+64;
 
@@ -100,7 +101,7 @@
         app.stage.addChild(treasure2);
 
         //Create the cat sprite
-        treasure3 = new Sprite(resources["images/treasure3.png"].texture);
+        treasure3 = new Sprite(resources["images/poklad3.png"].texture);
         treasure3.x = 64+128;
         treasure3.y = 384+64;
 
@@ -108,7 +109,7 @@
         app.stage.addChild(treasure3);
 
         //Create the cat sprite
-        treasure4 = new Sprite(resources["images/treasure4.png"].texture);
+        treasure4 = new Sprite(resources["images/poklad4.png"].texture);
         treasure4.x = 64+128;
         treasure4.y = 256-64;
 
@@ -116,7 +117,7 @@
         app.stage.addChild(treasure4);
 
         //Create the cat sprite
-        treasure5 = new Sprite(resources["images/treasure5.png"].texture);
+        treasure5 = new Sprite(resources["images/poklad5.png"].texture);
         treasure5.x = 64+384;
         treasure5.y = 384+64;
 
@@ -124,7 +125,7 @@
         app.stage.addChild(treasure5);
 
         //Create the cat sprite
-        treasure6 = new Sprite(resources["images/treasure6.png"].texture);
+        treasure6 = new Sprite(resources["images/poklad6.png"].texture);
         treasure6.x = 320;
         treasure6.y = 384+64;
 
@@ -132,7 +133,7 @@
         app.stage.addChild(treasure6);
 
         //Create the cat sprite
-        treasure7 = new Sprite(resources["images/treasure7.png"].texture);
+        treasure7 = new Sprite(resources["images/poklad7.png"].texture);
         treasure7.x = 64;
         treasure7.y = 576;
 
@@ -140,7 +141,7 @@
         app.stage.addChild(treasure7);
 
         //Create the cat sprite
-        treasure8 = new Sprite(resources["images/treasure8.png"].texture);
+        treasure8 = new Sprite(resources["images/poklad8.png"].texture);
         treasure8.x = 320+192+64;
         treasure8.y = 64+192;
 
@@ -148,7 +149,7 @@
         app.stage.addChild(treasure8);
 
         //Create the cat sprite
-        treasure9 = new Sprite(resources["images/treasure9.png"].texture);
+        treasure9 = new Sprite(resources["images/poklad9.png"].texture);
         treasure9.x = 64+192+64;
         treasure9.y = 64+192+64;
 
@@ -158,7 +159,7 @@
         treasures.push(treasure, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasure8, treasure9)
 
         //Create the cat sprite
-        cat = new Sprite(resources["images/army.png"].texture);
+        cat = new Sprite(resources["images/panacek.png"].texture);
         cat.x = 704;
         cat.y = 576;
         cat.vx = 0;
@@ -168,7 +169,7 @@
         app.stage.addChild(cat);
 
         //Create the cat sprite
-        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie = new Sprite(resources["images/zloun.png"].texture);
         zombie.x = 192;
         zombie.y = 192;
         zombie.vx = 0;
@@ -180,7 +181,7 @@
         zombies.push(zombie);
 
         //Create the cat sprite
-        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie = new Sprite(resources["images/zloun.png"].texture);
         zombie.x = 192+128;
         zombie.y = 192+128;
         zombie.vx = 0;
@@ -192,11 +193,11 @@
         zombies.push(zombie);
 
         //Create the cat sprite
-        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie = new Sprite(resources["images/zloun.png"].texture);
         zombie.x = 192+128+128;
-        zombie.y = 192+128;
-        zombie.vx = 0;
-        zombie.vy = 5;
+        zombie.y = 192;
+        zombie.vx = 5;
+        zombie.vy = 0;
 
         //Add the cat to the stage
         app.stage.addChild(zombie);
@@ -205,7 +206,7 @@
 
 
         //Create the cat sprite
-        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie = new Sprite(resources["images/zloun.png"].texture);
         zombie.x = 192+128+128+128;
         zombie.y = 192+128+128;
         zombie.vx = 0;
@@ -217,7 +218,7 @@
         zombies.push(zombie);
 
         //Create the cat sprite
-        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie = new Sprite(resources["images/zloun.png"].texture);
         zombie.x = 192;
         zombie.y = 192;
         zombie.vx = 5;
@@ -229,7 +230,7 @@
         zombies.push(zombie);
 
         //Create the cat sprite
-        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie = new Sprite(resources["images/zloun.png"].texture);
         zombie.x = 192+256;
         zombie.y = 192+256;
         zombie.vx = -5;
@@ -241,8 +242,8 @@
         zombies.push(zombie);
 
         //Create the cat sprite
-        zombie = new Sprite(resources["images/zombie.png"].texture);
-        zombie.x = 192+256;
+        zombie = new Sprite(resources["images/zloun.png"].texture);
+        zombie.x = 192+256+256;
         zombie.y = 192+128;
         zombie.vx = 5;
         zombie.vy = 0;
@@ -253,10 +254,44 @@
         zombies.push(zombie);
 
         //Create the cat sprite
-        zombie = new Sprite(resources["images/zombie.png"].texture);
+        zombie = new Sprite(resources["images/zloun.png"].texture);
         zombie.x = 192+128;
         zombie.y = 192+128;
         zombie.vx = -5;
+        zombie.vy = 0;
+
+        //Add the cat to the stage
+        app.stage.addChild(zombie);
+
+        zombies.push(zombie);
+        //Create the cat sprite
+        zombie = new Sprite(resources["images/zloun.png"].texture);
+        zombie.x = 64;
+        zombie.y = 64;
+        zombie.vx = -5;
+        zombie.vy = 0;
+
+        //Add the cat to the stage
+        app.stage.addChild(zombie);
+
+        zombies.push(zombie);
+        //Create the cat sprite
+        zombie = new Sprite(resources["images/zloun.png"].texture);
+        zombie.x = 64;
+        zombie.y = 64;
+        zombie.vx = 0;
+        zombie.vy = 5;
+
+        //Add the cat to the stage
+        app.stage.addChild(zombie);
+
+        zombies.push(zombie);
+
+        //Create the cat sprite
+        zombie = new Sprite(resources["images/zloun.png"].texture);
+        zombie.x = 64;
+        zombie.y = 576;
+        zombie.vx = 5;
         zombie.vy = 0;
 
         //Add the cat to the stage
@@ -277,11 +312,11 @@
 
         space.press = () => {
             spacePressed = true;
-            cat.texture = resources["images/army_red.png"].texture
+            cat.texture = resources["images/panacek_red.png"].texture
         }
 
         space.release = () => {
-            cat.texture = resources["images/army.png"].texture
+            cat.texture = resources["images/panacek.png"].texture
             spacePressed = false;
         }
 
